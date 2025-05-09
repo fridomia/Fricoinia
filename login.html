@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login | Fricoinia</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="login-wrapper">
+    <div class="login-box">
+      <img src="logo.png" alt="Fricoinia Logo" class="logo" />
+      <h2>Welcome Back to Fricoinia</h2>
+      <p class="subtitle">Mine coins, earn rewards, and build your future.</p>
+
+      <form id="login-form">
+        <input type="email" id="email" placeholder="Enter your email" required />
+        <input type="password" id="password" placeholder="Enter your password" required />
+        <button type="submit">Login</button>
+        <p id="error-message" class="error-message"></p>
+        <p id="reset-message" class="success-message"></p>
+        <p class="small-text">
+          <a href="#" id="forgot-password-link">Forgot password?</a>
+        </p>
+      </form>
+
+      <p class="small-text">
+        Don't have an account? <a href="next.html">Create one</a>
+      </p>
+    </div>
+  </div>
+
+  <script type="module" src="login.js"></script>
+</body>
+</html>

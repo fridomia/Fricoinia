@@ -1,0 +1,79 @@
+/* General Styles */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f7fafc;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding-top: 20px;
+}
+
+/* Letter-like Form */
+.letter-form {
+  background: #f8f8f8;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  border: 2px solid #e2e8f0;
+  width: 100%;
+  max-width: 600px;
+  margin: auto;
+  font-family: 'Georgia', serif;
+}
+
+.letter-form h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+.letter-form input, .letter-form textarea {
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: 'Georgia', serif;
+}
+
+.letter-form button {
+  padding: 0.75rem 1.5rem;
+  background-color: #4CAF50;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.letter-form button.cancel {
+  background-color: #f44336;
+}
+
+.letter-form .footer {
+  font-size: 0.9rem;
+  color: #777;
+  text-align: right;
+}
+
+/* Fixed "+" Button */
+#plusIcon {
+  position: fixed;
+  bottom: 6px;
+  right: 6px;
+  background-color: #3498db;
+  color: white;
+  font-size: 3rem;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}

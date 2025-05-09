@@ -1,0 +1,106 @@
+/* Reset and base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  color: #fff;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Login box */
+.login-wrapper {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+}
+
+.login-box {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 30px;
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  text-align: center;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.logo {
+  width: 80px;
+  margin-bottom: 20px;
+}
+
+h2 {
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 14px;
+  margin-bottom: 20px;
+  color: #ddd;
+}
+
+/* Form inputs */
+input {
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+  font-size: 14px;
+}
+
+input:focus {
+  outline: none;
+  box-shadow: 0 0 5px #3a8dde;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: #3a8dde;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background-color: #2f6ebc;
+}
+
+/* Message styles */
+.error-message {
+  color: #ff6666;
+  font-size: 13px;
+  margin-top: -10px;
+}
+
+.success-message {
+  color: #66ff99;
+  font-size: 13px;
+  margin-top: 10px;
+}
+
+/* Link text */
+.small-text {
+  font-size: 13px;
+  margin-top: 15px;
+  color: #ccc;
+}
+
+.small-text a {
+  color: #fff;
+  text-decoration: underline;
+}

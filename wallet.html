@@ -1,0 +1,55 @@
+<!DOCTYPE html>  <html lang="en">  
+<head>  
+  <meta charset="UTF-8" />  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>  
+  <title>Fricoinia Wallet</title>  
+  <link rel="stylesheet" href="wallet.css" />  
+  <script type="module" src="wallet.js" defer></script>  
+</head>  
+<body>  
+  <header>  
+    <h1>Fricoinia Wallet</h1>  
+    <button id="logout-btn">Logout</button>  
+  </header>    <main>  
+    <!-- Wallet Overview -->  
+    <section id="wallet-summary">  
+      <h2>Your Balance</h2>  
+      <p><strong>FRC:</strong> <span id="coin-balance">Loading...</span></p>  
+      <p><strong>Wallet Address:</strong> <span id="wallet-address">Loading...</span></p>  
+    </section>  <!-- Fricoinia Price -->  
+<section id="fricoinia-price">  
+  <h2>Fricoinia Price</h2>  
+  <p><strong>FRC to USD:</strong> <span id="fricoin-price">Loading...</span></p>  
+</section>  
+
+<!-- Transaction History -->  
+<section id="transaction-history">  
+  <h2>Transaction History</h2>  
+  <ul id="history-list">  
+    <!-- Transactions will appear here -->  
+  </ul>  
+</section>  
+
+<!-- Send Coins Section -->  
+<section id="send-coins">  
+  <h2>Send Coins</h2>  
+  <form id="send-form">  
+    <label for="recipient">Recipient UID:</label><br>  
+    <input type="text" id="recipient" placeholder="Recipient Wallet Address (UID)" required /><br>  
+
+    <label for="amount">Amount to send:</label><br>  
+    <input type="number" id="amount" placeholder="Amount to send" required min="1" /><br>  
+
+    <p><strong>Fee (7%):</strong> <span id="fee-preview">0</span> FRC</p>  
+    <p><strong>Amount After Fee:</strong> <span id="after-fee">0</span> FRC</p>  
+
+    <button type="submit" id="send-btn">Send</button>  
+  </form>  
+    <p>Go to the <a href="market.html">Market</a></p>
+</section>
+
+  </main>    <footer>  
+    <p>&copy; 2025 Fridomia Government | Powered by Fricoinia Blockchain</p>  
+  </footer>  
+</body>  
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fricoinia Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css" />
+  <script type="module" src="dashboard.js" defer></script>
+</head>
+<body>
+  <header>
+    <img src="logo.png" alt="Fricoinia Logo" style="height: 60px;" />
+    <h1>Fricoinia Dashboard</h1>
+    <button id="logout-btn">Logout</button>
+  </header>
+
+  <main>
+    <section id="wallet-summary">
+      <h2>Your Balance</h2>
+      <p><strong>FRC:</strong> <span id="coin-balance">0.000000000</span></p>
+      <button onclick="location.href='wallet.html'">Go to Wallet</button>
+    </section>
+
+    <section id="mining-section">
+      <h2>Mine Fricoinia</h2>
+      <button id="start-mining">Start Mining</button>
+      <p id="mining-status">Click "Start Mining" to begin</p>
+      <ul id="mining-log"></ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Fridomia Government | Powered by Fricoinia Blockchain <a href="https://drive.google.com/file/d/10J2yqdZQhsmJChHjtBntL5X5Vte3TWy_/view?usp=drivesdk">Get App</a></p>
+  </footer>
+</body>
+</html>

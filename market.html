@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fricoinia Marketplace</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      background-color: #222;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 20px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    }
+
+    #fricoin-price {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .instructions {
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    nav {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .menu-button {
+      padding: 10px 20px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .menu-button:hover {
+      background-color: #45a049;
+    }
+
+    footer {
+      text-align: center;
+      padding: 10px;
+      margin-top: 30px;
+      background-color: #222;
+      color: #fff;
+    }
+  </style>
+
+  <script type="module">
+    // Fetch price from Dogecoin and calculate Fricoinia price
+    const fetchDogecoinPrice = async () => {
+      const res = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=dogecoin&vs_currencies=usd");
+      const data = await res.json();
+      return data.dogecoin.usd;
+    };
+
+    const updateFricoinPrice = async () => {
+      const doge = await fetchDogecoinPrice();
+      const price = doge * 10;
+      const el = document.getElementById("fricoin-price");
+      if (el) el.textContent = `Fricoinia Price: ${price.toFixed(4)} USD`;
+    };
+
+    window.onload = () => {
+      updateFricoinPrice();
+    };
+  </script>
+</head>
+
+<body>
+  <header>
+    <h1>Fricoinia Marketplace</h1>
+  </header>
+
+  <main>
+    <div id="fricoin-price">Loading Fricoinia price...</div>
+
+    <div class="instructions">
+      <h2>Welcome to the Fricoinia Market Platform</h2>
+      <p>This platform allows users to:</p>
+      <ul>
+        <li>See the real-time price of Fricoinia (FRC)</li>
+        <li>Buy and sell coins in a public marketplace</li>
+        <li>Post your coins for sale with a price, payment method, and contact information</li>
+      </ul>
+      <p>No registration is required to view the marketplace. Anyone can browse offers and get in touch directly with sellers.</p>
+      <p>If you pay for coins and the sender refuses to send the coins to you, <strong>Mail us</strong> by clicking <a href="mailto:fridomiamovement@gmail.com">
+  <button class="bg-blue-500 text-white px-4 py-2 rounded">
+    Contact Us
+  </button>
+</a></p>
+    </div>
+
+    <nav>
+      <button class="menu-button" onclick="window.location.href='marketplace.html'">Go to Marketplace</button>
+    </nav>
+  </main>
+
+  <footer>
+    Fricoinia &copy; 2025
+  </footer>
+</body>
+</html>

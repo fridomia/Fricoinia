@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fricoinia Marketplace</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="marketplace.css" />
+  <style>
+    .spin {
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body class="bg-gray-100">
+
+  <!-- Header with username, price, and logout -->
+  <header class="flex justify-between items-center p-4 bg-blue-600 text-white">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-4">
+      <div id="username" class="font-bold">Guest</div>
+      <div id="fricoin-price" class="text-sm sm:text-base"></div>
+    </div>
+    <button 
+      id="logoutBtn" 
+      class="bg-red-500 hover:bg-red-600 transition text-white px-3 py-1 rounded" 
+      aria-label="Logout"
+    >
+      Logout
+    </button>
+  </header>
+
+  <!-- Posts list -->
+  <div id="posts" class="p-4 space-y-4"></div>
+
+  <!-- Floating button to show post form -->
+  <div class="fixed bottom-4 right-4">
+    <button 
+      id="toggleForm" 
+      aria-label="Add Post" 
+      title="Add Post"
+      class="bg-green-500 hover:bg-green-600 transition text-white p-4 rounded-full shadow-lg"
+    >
+      <svg id="plusIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Post Form Modal -->
+  <div 
+    id="postForm" 
+    class="fixed top-0 left-0 w-full h-full bg-gray-600 bg-opacity-50 flex justify-center items-center hidden"
+  >
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+      <h2 class="text-2xl mb-4 text-center font-semibold">Post Your Coins</h2>
+      <input 
+        type="number" 
+        id="coinQuantity" 
+        class="mb-2 p-2 border rounded w-full" 
+        placeholder="Quantity of Coins" 
+        required
+      />
+      <textarea 
+        id="coinDescription" 
+        class="mb-4 p-2 border rounded w-full" 
+        placeholder="Description- Add mean of payment and contacts to help your clients!" 
+        required
+      ></textarea>
+      <div class="flex justify-end space-x-2">
+        <button 
+          id="submitPost" 
+          class="bg-blue-500 hover:bg-blue-600 transition text-white px-4 py-2 rounded"
+        >
+          Post
+        </button>
+        <button 
+          id="cancelPost" 
+          class="bg-gray-500 hover:bg-gray-600 transition text-white px-4 py-2 rounded"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- App Script -->
+  <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      import("https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js").then(({ initializeApp }) => {
+        import("https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js").then(({ getAuth, onAuthStateChanged, signOut }) => {
+          import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js").then(({ getFirestore, collection, getDocs, addDoc, serverTimestamp, query, orderBy, doc, updateDoc, getDoc }) => {
+
+            const firebaseConfig = {
+              apiKey: "AIzaSyBoPvstiWvt2FmkPdAUfPGKVeMcTiPjLSM",
+              authDomain: "fricoinia-fridomia.firebaseapp.com",
+              projectId: "fricoinia-fridomia",
+              storageBucket: "fricoinia-fridomia.appspot.com",
+              messagingSenderId: "931776573524",
+              appId: "1:931776573524:web:c570f01092d227d4113dc1",
+              measurementId: "G-2Q1PSBZGDY"
+            };
+
+            const app = initializeApp(firebaseConfig);
+            const db = getFirestore(app);
+            const auth = getAuth(app);
+
+            // Fetch Fricoinia price
+            const fetchDogecoinPrice = async () => {
+              const res = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=dogecoin&vs_currencies=usd");
+              const data = await res.json();
+              return data.dogecoin.usd;
+            };
+
+            const updateFricoinPrice = async () => {
+              const doge = await fetchDogecoinPrice();
+              const price = doge * 10;
+              const el = document.getElementById("fricoin-price");
+              if (el) el.textContent = `Fricoinia Price: ${price.toFixed(4)} USD`;
+            };
+
+            // Load Posts from Firestore
+            const loadPosts = async () => {
+              const postsContainer = document.getElementById("posts");
+              postsContainer.innerHTML = "";
+
+              const q = query(collection(db, "marketplace"), orderBy("createdAt", "desc"));
+              const snapshot = await getDocs(q);
+
+              snapshot.forEach((docSnap) => {
+                const post = docSnap.data();
+                const div = document.createElement("div");
+                div.className = "bg-white p-4 rounded shadow mt-2";
+
+                let content = `
+                  <div class="font-bold text-blue-600">${post.username}</div>
+                  <div class="text-sm text-gray-600">Coins: ${post.quantity}</div>
+                  <div class="mt-2">${post.description}</div>
+                `;
+
+                if (post.sold) {
+                  content += `<div class="text-green-600 font-bold mt-2">SOLD</div>`;
+                } else if (auth.currentUser && auth.currentUser.uid === post.userId) {
+                  content += `<button class="mt-2 bg-yellow-500 text-white px-2 py-1 rounded" data-id="${docSnap.id}">Mark as Sold</button>`;
+                }
+
+                div.innerHTML = content;
+                postsContainer.appendChild(div);
+              });
+
+              // Add "Mark as Sold" listeners
+              document.querySelectorAll("[data-id]").forEach(button => {
+                button.addEventListener("click", async (e) => {
+                  const postId = e.target.getAttribute("data-id");
+                  const postRef = doc(db, "marketplace", postId);
+                  await updateDoc(postRef, { sold: true });
+                  await loadPosts();
+                });
+              });
+            };
+
+            // Auth
+            onAuthStateChanged(auth, async (user) => {
+              if (!user) {
+                window.location.href = "login.html";
+                return;
+              }
+
+              try {
+                const profileRef = doc(db, "profiles", user.uid);
+                const profileSnap = await getDoc(profileRef);
+                const usernameEl = document.getElementById("username");
+
+                if (profileSnap.exists() && usernameEl) {
+                  usernameEl.textContent = profileSnap.data().username;
+                } else if (usernameEl) {
+                  usernameEl.textContent = user.email || user.uid;
+                }
+              } catch (err) {
+                console.error("Error fetching username:", err);
+              }
+
+              updateFricoinPrice();
+              loadPosts();
+            });
+
+            // Logout
+            const logoutBtn = document.getElementById("logoutBtn");
+            if (logoutBtn) {
+              logoutBtn.addEventListener("click", async () => {
+                await signOut(auth);
+                window.location.href = "login.html";
+              });
+            }
+
+            // Post Form: Toggle and Submit
+            const toggleBtn = document.getElementById("plusIcon");  // "+" button
+            const cancelBtn = document.getElementById("cancelPost");  // Cancel button
+            const submitBtn = document.getElementById("submitPost");  // Submit button
+            const postForm = document.getElementById("postForm");  // The form
+
+            if (toggleBtn && cancelBtn && submitBtn) {
+              // Show or hide the post form when the plus icon is clicked
+              toggleBtn.addEventListener("click", () => {
+                postForm.classList.toggle("hidden");  // Toggle the visibility of the post form
+              });
+
+              // Hide the post form when cancel button is clicked
+              cancelBtn.addEventListener("click", () => {
+                postForm.classList.add("hidden");  // Add "hidden" class to hide the form
+              });
+
+              // Submit post to Firestore when submit button is clicked
+              submitBtn.addEventListener("click", async () => {
+                const quantity = document.getElementById("coinQuantity").value.trim();
+                const description = document.getElementById("coinDescription").value.trim();
+                const user = auth.currentUser;
+
+                if (!user || !quantity || !description) {
+                  alert("Please fill all fields.");
+                  return;
+                }
+
+                const profileSnap = await getDoc(doc(db, "profiles", user.uid));
+                const username = profileSnap.exists() ? profileSnap.data().username : (user.email || "Unknown");
+
+                try {
+                  // Add post to Firestore marketplace collection
+                  await addDoc(collection(db, "marketplace"), {
+                    userId: user.uid,
+                    username,
+                    quantity,
+                    description,
+                    sold: false,
+                    createdAt: serverTimestamp()
+                  });
+
+                  // Reset form fields and hide form
+                  postForm.classList.add("hidden");
+                  document.getElementById("coinQuantity").value = "";
+                  document.getElementById("coinDescription").value = "";
+                  await loadPosts();
+                  alert("Your post has been published!");
+                } catch (error) {
+                  console.error("Error posting:", error);
+                  alert("Failed to post. Try again.");
+                }
+              });
+            }
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>
